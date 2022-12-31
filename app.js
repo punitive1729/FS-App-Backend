@@ -8,6 +8,7 @@ const fileRouter = require('./routes/fileRoutes');
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}));
 app.use('/api/v1/files', fileRouter);
 app.all('*', (req, res, next) => {
   next(new AppError(404, `Cannot find ${req.originalUrl} on this server!`));
