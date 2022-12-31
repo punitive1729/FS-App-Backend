@@ -7,7 +7,7 @@ const cors = require('cors');
 const fileRouter = require('./routes/fileRoutes');
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use('/api/v1/files', fileRouter);
 app.all('*', (req, res, next) => {
