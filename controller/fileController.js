@@ -19,6 +19,8 @@ const upload = multer({
 
 exports.uploadFile = async (req, res, next) => {
   upload(req, res, async (err) => {
+    console.log('Request recieved\n\n', req);
+    console.log('\n\n\n');
     const file = req.file;
     console.log('Uploaded file\n', file);
     if (!file)
