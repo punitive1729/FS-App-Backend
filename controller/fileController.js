@@ -19,11 +19,14 @@ const upload = multer({
 
 exports.uploadFile = async (req, res, next) => {
   upload(req, res, async (err) => {
-    console.log('Request recieved\n\n', req);
-    console.log('\n\n\n');
+    console.log('Request-Body recieved\n\n', req.body);
+    console.log('\n\n\n Req body file',req.body.file);
     const file = req.file;
     console.log('Uploaded file\n', file);
     if (!file)
+      file=req.body.file
+    
+    if(!file)
       return next(new AppError(404, 'No file found. Please upload a file'));
 
     // file size exceeds limit
