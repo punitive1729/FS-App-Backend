@@ -13,44 +13,37 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({
+exports.upload = multer({
   storage,
-}).single('file');
+});
 
 exports.uploadFile = async (req, res, next) => {
-  upload(req, res, async (err) => {
-    console.log('Request-Body\n', req.body);
-    const file = req.file;
-    console.log('Uploaded file\n', file);
-    
-    if(!file)
-      return next(new AppError(404, 'No file found. Please upload a file'));
+  const file = req.file;
+  console.log('Uploaded file\n', file);
 
-    // file size exceeds limit
-    if (file.size >= fileSizeLimit)
-      return next(new AppError(404, 'File size exceeded limit'));
+  if (!file)
+    return next(new AppError(404, 'No file found. Please upload a file'));
 
-    if (err) {
-      err.message = err.message || 'Something went wrong';
-      return next(new AppError(500, err.message));
-    }
+  // file size exceeds limit
+  if (file.size >= fileSizeLimit)
+    return next(new AppError(404, 'File size exceeded limit'));
 
-    console.log(file);
-    // Save the record in DB
-    const response = await FilesModel.create({
-      filename: file.filename,
-      size: file.size,
-      path: file.path,
-      fileId: `${Date.now()}-${Math.round(Math.random() * 1e9)}-${Math.round(
-        Math.random() * 1e9
-      )}`,
-    });
-    console.log('Saved FileID: ', response.fileId);
-    return res.status(200).json({
-      status: 'Success',
-      message: 'File Sent',
-      downloadUrl: `${baseUrl}/api/v1/files/${response.fileId}`,
-    });
+  console.log(file);
+  // Save the record in DB
+  const response = await FilesModel.create({
+    filename: file.filename,
+    size: file.size,
+    path: file.path,
+    fileId: `${Date.now()}-${Math.round(Math.random() * 1e9)}-${Math.round(
+      Math.random() * 1e9
+    )}`,
+  });
+
+  console.log('Saved FileID: ', response.fileId);
+  return res.status(200).json({
+    status: 'Success',
+    message: 'File Sent',
+    downloadUrl: `${baseUrl}/api/v1/files/${response.fileId}`,
   });
 };
 
