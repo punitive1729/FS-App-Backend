@@ -18,7 +18,7 @@ const filesSchema = mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    expires: '10m',
+    expires: '600s',
     default: Date.now(),
   },
 });
