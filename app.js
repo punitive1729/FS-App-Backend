@@ -17,6 +17,11 @@ app.use(cors());
 app.use(limiter);
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.get('/health', (req, res) =>
+  res
+    .status(200)
+    .json({ status: 'success', message: 'Backend services running fine' })
+);
 app.use('/api/v1/files', fileRouter);
 app.all('*', (req, res, next) => {
   next(new AppError(404, `Cannot find ${req.originalUrl} on this server!`));
