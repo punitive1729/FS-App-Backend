@@ -28,9 +28,8 @@ exports.uploadFile = async (req, res, next) => {
   if (file.size >= fileSizeLimit)
     return next(new AppError(404, 'File size exceeded limit'));
 
-  console.log(file);
   // Save the record in DB
-  const response = await FilesModel.create({
+  const response = await FilesModel.insertOne({
     filename: file.filename,
     size: file.size,
     path: file.path,
